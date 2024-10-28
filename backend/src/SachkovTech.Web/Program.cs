@@ -54,9 +54,9 @@ builder.Services.AddAuthServices(builder.Configuration);
 
 var app = builder.Build();
 
-var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
-
-await accountsSeeder.SeedAsync();
+// var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+//
+// await accountsSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 
@@ -68,9 +68,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(config => { config.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod(); });
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/api/users", () =>
+{
+    return Results.BadRequest("Всё плохо");
+});
 
 app.Run();

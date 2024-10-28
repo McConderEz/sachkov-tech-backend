@@ -1,5 +1,5 @@
 using FluentAssertions;
-using SachkovTech.Issues.Domain.IssueSolving.Entities;
+using SachkovTech.Issues.Domain.IssueSolving;
 using SachkovTech.Issues.Domain.IssueSolving.Enums;
 using SachkovTech.SharedKernel.ValueObjects;
 using SachkovTech.SharedKernel.ValueObjects.Ids;

@@ -1,9 +1,12 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SachkovTech.Core.Extensions;
 using SachkovTech.Issues.Domain.Module.Entities;
 using SachkovTech.SharedKernel.ValueObjects;
 using SachkovTech.SharedKernel.ValueObjects.Ids;
+using FileInfo = SachkovTech.SharedKernel.ValueObjects.Ids.FileInfo;
 
 namespace SachkovTech.Issues.Infrastructure.Configurations.Write;
 
@@ -23,8 +26,7 @@ public class IssueConfiguration : IEntityTypeConfiguration<Issue>
         builder.ComplexProperty(i => i.LessonId,
             lb =>
             {
-                lb.Property(l => l.Value)
-                    .IsRequired(false)
+                lb.Property(l => l!.Value)
                     .HasColumnName("lesson_id");
             });
 
@@ -60,11 +62,26 @@ public class IssueConfiguration : IEntityTypeConfiguration<Issue>
                 .HasColumnName("description");
         });
 
-        builder.Property(i => i.Files)
-            .ValueObjectsCollectionJsonConversion(
-                fileId => fileId.Value,
-                fileGuid => FileId.Create(fileGuid))
-            .HasColumnName("files");
+        var enumConverter = new ValueConverter<IssueType, string>(
+            v => v.ToString(),
+            v => (IssueType)Enum.Parse(typeof(IssueType), v));
+
+        builder.Property(i => i.Type)
+            .HasConversion(new EnumToStringConverter<IssueType>());
+
+        builder.Property(i => i.FilesInfo)
+            .HasConversion(
+                filesInfo => JsonSerializer.Serialize(filesInfo, JsonSerializerOptions.Default),
+                json => JsonSerializer.Deserialize<IReadOnlyList<FileInfo>>(json, JsonSerializerOptions.Default)!);
+
+        builder.Property(i => i.CreatedAt)
+            .SetDefaultDateTimeKind(DateTimeKind.Utc);
+
+        // builder.Property(i => i.FilesInfo)
+        //     .ValueObjectsCollectionJsonConversion(
+        //         fileId => fileId.Value,
+        //         FileId.Create)
+        //     .HasColumnName("files");
 
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)

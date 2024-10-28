@@ -3,15 +3,16 @@ using SachkovTech.Issues.Domain.Module.ValueObjects;
 using SachkovTech.SharedKernel;
 using SachkovTech.SharedKernel.ValueObjects;
 using SachkovTech.SharedKernel.ValueObjects.Ids;
+using FileInfo = SachkovTech.SharedKernel.ValueObjects.Ids.FileInfo;
 
 namespace SachkovTech.Issues.Domain.Module.Entities;
 
 public class Issue : SoftDeletableEntity<IssueId>
 {
-    private List<FileId> _files = [];
+    private List<FileInfo> _filesInfo = [];
 
     //ef core navigation
-    public Module Module { get; private set; }
+    public Module Module { get; private set; } = null!;
 
     //ef core
     private Issue(IssueId id) : base(id)
@@ -24,28 +25,32 @@ public class Issue : SoftDeletableEntity<IssueId>
         Description description,
         LessonId lessonId,
         Experience experience,
-        IEnumerable<FileId>? files = null) : base(id)
+        IEnumerable<FileInfo>? files = null) : base(id)
     {
         Title = title;
         Description = description;
         LessonId = lessonId;
         Experience = experience;
-        _files = files?.ToList() ?? [];
+        _filesInfo = files?.ToList() ?? [];
     }
 
     public Experience Experience { get; private set; } = default!;
     public Title Title { get; private set; } = default!;
     public Description Description { get; private set; } = default!;
 
-    public Position Position { get; private set; }
+    public Position Position { get; private set; } = null!;
 
     public LessonId LessonId { get; private set; }
 
-    public IReadOnlyList<FileId> Files => _files;
+    public IssueType Type { get; private set; } = default!;
 
-    public void UpdateFiles(IEnumerable<FileId> files)
+    public DateTime CreatedAt { get; private set; }
+
+    public IReadOnlyList<FileInfo> FilesInfo { get; private set; } = null!;
+
+    public void UploadFiles(IEnumerable<FileInfo> files)
     {
-        _files = files.ToList();
+        _filesInfo = files.ToList();
     }
 
     public void SetPosition(Position position) =>
@@ -89,4 +94,10 @@ public class Issue : SoftDeletableEntity<IssueId>
 
         return Result.Success<Error>();
     }
+}
+
+public enum IssueType
+{
+    Optional,
+    Mandatory
 }

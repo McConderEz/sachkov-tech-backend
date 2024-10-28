@@ -1,7 +1,8 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SachkovTech.Core.Dtos;
-using SachkovTech.Core.Extensions;
+using FileInfo = SachkovTech.SharedKernel.ValueObjects.Ids.FileInfo;
 
 namespace SachkovTech.Issues.Infrastructure.Configurations.Read;
 
@@ -12,10 +13,11 @@ public class IssueDtoConfiguration : IEntityTypeConfiguration<IssueDto>
         builder.ToTable("issues");
 
         builder.HasKey(i => i.Id);
-        
+
         builder.Property(i => i.Files)
             .HasConversion(
-                values => EfCoreFluentApiExtensions.SerializeValueObjectsCollection(),
-                json => EfCoreFluentApiExtensions.DeserializeDtoCollection<Guid>(json).ToArray());
+                values => string.Empty,
+                json => JsonSerializer.Deserialize<IEnumerable<FileInfo>>(json, JsonSerializerOptions.Default)!
+                    .Select(f => f.Id.Value).ToArray());
     }
 }

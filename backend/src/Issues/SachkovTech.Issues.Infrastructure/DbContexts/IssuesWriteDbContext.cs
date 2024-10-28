@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SachkovTech.Issues.Domain.IssueSolving.Entities;
+using SachkovTech.Issues.Domain.IssueSolving;
 using SachkovTech.Issues.Domain.IssuesReviews;
 using SachkovTech.Issues.Domain.Module;
 

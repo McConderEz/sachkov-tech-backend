@@ -9,7 +9,7 @@ public class IssueId : ValueObject
         Value = value;
     }
 
-    public Guid Value { get; init; }
+    public Guid Value { get;}
 
     public static IssueId NewIssueId() => new(Guid.NewGuid());
     public static IssueId Empty() => new(Guid.Empty);

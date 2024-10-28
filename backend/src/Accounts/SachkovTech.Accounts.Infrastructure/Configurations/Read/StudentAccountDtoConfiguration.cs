@@ -16,7 +16,7 @@ public class StudentAccountDtoConfiguration : IEntityTypeConfiguration<StudentAc
         
         builder.Property(v => v.SocialNetworks)
             .HasConversion(
-                values => EfCoreFluentApiExtensions.SerializeValueObjectsCollection(),
-                json => EfCoreFluentApiExtensions.DeserializeDtoCollection<SocialNetworkDto>(json));
+                values => ModelBuilderExtensions.SerializeValueObjectsCollection(),
+                json => ModelBuilderExtensions.DeserializeDtoCollection<SocialNetworkDto>(json));
     }
 }

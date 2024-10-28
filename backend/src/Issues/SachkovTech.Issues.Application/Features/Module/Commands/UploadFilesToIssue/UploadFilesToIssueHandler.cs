@@ -69,11 +69,11 @@ public class UploadFilesToIssueHandler : ICommandHandler<UploadFilesResponse, Up
             return uploadFileResult.Error;
         }
 
-        var issueFiles = issueResult.Value.Files.ToList();
-
-        issueFiles.AddRange(uploadFileResult.Value.UploadedFileIds);
-
-        issueResult.Value.UpdateFiles(issueFiles);
+        // var issueFiles = issueResult.Value.FilesInfo.ToList();
+        //
+        // issueFiles.AddRange(uploadFileResult.Value.UploadedFileIds);
+        //
+        // issueResult.Value.UpdateFiles(issueFiles);
 
         await _unitOfWork.SaveChanges(cancellationToken);
 

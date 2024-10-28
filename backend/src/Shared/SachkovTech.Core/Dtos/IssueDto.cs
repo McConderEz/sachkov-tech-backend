@@ -17,8 +17,3 @@ public class IssueDto
 
     public Guid[] Files { get; set; } = null!;
 }
-
-public class IssueFileDto
-{
-    public string PathToStorage { get; set; } = string.Empty;
-}

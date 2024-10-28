@@ -15,8 +15,8 @@ namespace SachkovTech.Files.Infrastructure.Database.Configurations.Read
             
             builder.Property(i => i.Attributes)
                 .HasConversion(
-                    values => EfCoreFluentApiExtensions.SerializeValueObjectsCollection(),
-                    json => EfCoreFluentApiExtensions.DeserializeDtoCollection<string>(json));
+                    values => ModelBuilderExtensions.SerializeValueObjectsCollection(),
+                    json => ModelBuilderExtensions.DeserializeDtoCollection<string>(json));
         }
     }
 }

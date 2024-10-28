@@ -2,11 +2,19 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SachkovTech.Core.Converters;
 
 namespace SachkovTech.Core.Extensions;
 
-public static class EfCoreFluentApiExtensions
+public static class ModelBuilderExtensions
 {
+    public static PropertyBuilder<DateTime> SetDefaultDateTimeKind(
+        this PropertyBuilder<DateTime> builder,
+        DateTimeKind kind)
+    {
+        return builder.HasConversion(new DateTimeKindValueConverter(kind));
+    }
+
     public static PropertyBuilder<IReadOnlyList<TValueObject>> ValueObjectsCollectionJsonConversion<TValueObject, TDto>(
         this PropertyBuilder<IReadOnlyList<TValueObject>> builder,
         Func<TValueObject, TDto> toDtoSelector,
@@ -26,7 +34,7 @@ public static class EfCoreFluentApiExtensions
 
         return JsonSerializer.Serialize(dtos, JsonSerializerOptions.Default);
     }
-    
+
     public static string SerializeValueObjectsCollection() =>
         JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default);
 
@@ -37,13 +45,13 @@ public static class EfCoreFluentApiExtensions
 
         return dtos.Select(selector).ToList();
     }
-    
+
     public static IEnumerable<TDto> DeserializeDtoCollection<TDto>(string json)
     {
         return JsonSerializer.Deserialize<IEnumerable<TDto>>(json, JsonSerializerOptions.Default) ?? [];
     }
 
-    private static ValueComparer<IReadOnlyList<T>> CreateCollectionValueComparer<T>() =>
+    private static ValueComparer<IEnumerable<T>> CreateCollectionValueComparer<T>() =>
         new(
             (c1, c2) => c1!.SequenceEqual(c2!),
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v!.GetHashCode())),

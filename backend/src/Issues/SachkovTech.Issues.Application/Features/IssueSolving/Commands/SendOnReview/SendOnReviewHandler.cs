@@ -61,7 +61,7 @@ public class SendOnReviewHandler : ICommandHandler<SendOnReviewCommand>
         {
             return sendOnReviewRes.Error.ToErrorList();
         }
-
+        
         var createIssueReviewRes = await CreateIssueReview(
             command.UserIssueId, command.UserId, pullRequestUrl.Value, cancellationToken);
 

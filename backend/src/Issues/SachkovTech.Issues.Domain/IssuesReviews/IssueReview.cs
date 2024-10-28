@@ -32,22 +32,20 @@ public sealed class IssueReview : Entity<IssueReviewId>
         PullRequestUrl = pullRequestUrl;
     }
 
-    public UserIssueId UserIssueId { get; private set; }
-    public UserId UserId { get; private set; }
-
+    public UserIssueId UserIssueId { get; private set; } = null!;
+    public UserId UserId { get; private set; } = null!;
     public UserId? ReviewerId { get; private set; } = null;
 
     public IssueReviewStatus IssueReviewStatus { get; private set; }
 
-    private List<Comment> _comments = [];
+    private readonly List<Comment> _comments = [];
     public IReadOnlyList<Comment> Comments => _comments;
 
     public DateTime ReviewStartedTime { get; private set; }
     public DateTime? IssueTakenTime { get; private set; }
-
     public DateTime? IssueApprovedTime { get; private set; }
 
-    public PullRequestUrl PullRequestUrl { get; private set; }
+    public PullRequestUrl PullRequestUrl { get; private set; } = null!;
 
     public static Result<IssueReview, Error> Create(UserIssueId userIssueId,
         UserId userId,

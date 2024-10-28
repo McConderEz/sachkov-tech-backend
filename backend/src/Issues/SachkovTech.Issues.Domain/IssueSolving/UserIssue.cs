@@ -5,15 +5,15 @@ using SachkovTech.SharedKernel;
 using SachkovTech.SharedKernel.ValueObjects;
 using SachkovTech.SharedKernel.ValueObjects.Ids;
 
-namespace SachkovTech.Issues.Domain.IssueSolving.Entities;
+namespace SachkovTech.Issues.Domain.IssueSolving;
 
 public class UserIssue : Entity<UserIssueId>
 {
     //ef core
     private UserIssue(UserIssueId id) : base(id)
     {
-
     }
+
     public UserIssue(
         UserIssueId id,
         UserId userId,
@@ -23,15 +23,15 @@ public class UserIssue : Entity<UserIssueId>
         UserId = userId;
         IssueId = issueId;
         ModuleId = moduleId;
-        
+
         TakeOnWork();
     }
 
-    public UserId UserId { get; private set; }
+    public UserId UserId { get; private set; } = null!;
 
-    public IssueId IssueId { get; private set; }
-    
-    public ModuleId ModuleId { get; private set; }
+    public IssueId IssueId { get; private set; } = null!;
+
+    public ModuleId ModuleId { get; private set; } = null!;
 
     public IssueStatus Status { get; private set; }
 
@@ -82,7 +82,6 @@ public class UserIssue : Entity<UserIssueId>
         Status = IssueStatus.NotAtWork;
 
         return Result.Success<Error>();
-
     }
 
     public UnitResult<Error> CompleteIssue()

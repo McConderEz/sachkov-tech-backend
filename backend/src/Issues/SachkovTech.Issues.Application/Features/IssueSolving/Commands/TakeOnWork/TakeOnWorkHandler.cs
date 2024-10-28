@@ -7,7 +7,7 @@ using SachkovTech.Core.Dtos;
 using SachkovTech.Files.Contracts;
 using SachkovTech.Issues.Application.Interfaces;
 using SachkovTech.Issues.Contracts.Responses;
-using SachkovTech.Issues.Domain.IssueSolving.Entities;
+using SachkovTech.Issues.Domain.IssueSolving;
 using SachkovTech.Issues.Domain.IssueSolving.Enums;
 using SachkovTech.SharedKernel;
 using SachkovTech.SharedKernel.ValueObjects.Ids;
