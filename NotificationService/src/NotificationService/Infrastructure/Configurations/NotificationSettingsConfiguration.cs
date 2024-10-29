@@ -17,7 +17,7 @@ public class NotificationSettingsConfiguration : IEntityTypeConfiguration<Notifi
 
         builder.Property(n => n.EmailAddress)
             .HasConversion(
-                push => push.Value.ToString(),
+                push => push.value.ToString(),
                 pull => Email.Create(pull).Value
             );
 

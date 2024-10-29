@@ -12,17 +12,17 @@ public class NotificationSettings
 
     public Guid UserId { get; private set; }
 
-    public Email EmailAddress { get; private set; }
+    public Email EmailAddress { get; private set; } = null!;
 
-    public bool SendEmail { get; private set; }
+    public bool SendEmail { get; private set; } = true;
 
-    public string TelegramId { get; private set; }
+    public string TelegramId { get; private set; } = null!;
 
     public bool SendTelegram { get; private set; }
 
-    public string WebEndpoint { get; private set; }
+    public string WebEndpoint { get; private set; } = DEFAULT_WEB_ENDPOINT;
 
-    public bool SendWeb { get; private set; }
+    public bool SendWeb { get; private set; } = true;
 
     private NotificationSettings(
         Guid id,
@@ -51,11 +51,9 @@ public class NotificationSettings
         bool sendEmail = true,
         string telegramId = null!,
         bool sendTelegram = false,
-        string webEndpoint = null!,
+        string webEndpoint = DEFAULT_WEB_ENDPOINT,
         bool sendWeb = true)
     {
-        webEndpoint ??= DEFAULT_WEB_ENDPOINT;
-
         var preferences = new NotificationSettings(
             id,
             userId,

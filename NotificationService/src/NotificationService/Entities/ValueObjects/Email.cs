@@ -1,17 +1,17 @@
+using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using NotificationService.HelperClasses;
-using System.Text.RegularExpressions;
 
 namespace NotificationService.Entities.ValueObjects;
 
 public class Email : ValueObject
 {
     private const string REGEX = @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$";
-    public string Value { get; }
+    public string value { get; }
 
     private Email(string email)
     {
-        Value = email;
+        value = email;
     }
 
     public static Result<Email, Error> Create(string email)
@@ -26,7 +26,7 @@ public class Email : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Value;
+        yield return value;
     }
 
 }
