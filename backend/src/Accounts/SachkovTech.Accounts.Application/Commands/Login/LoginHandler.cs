@@ -32,7 +32,7 @@ public class LoginHandler : ICommandHandler<LoginResponse, LoginCommand>
         var user = await _userManager.Users
             .Include(u => u.Roles)
             .FirstOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
-            
+        
         if (user is null)
         {
             return Errors.General.NotFound().ToErrorList();
@@ -46,7 +46,13 @@ public class LoginHandler : ICommandHandler<LoginResponse, LoginCommand>
 
         var accessToken = await _tokenProvider.GenerateAccessToken(user, cancellationToken);
         var refreshToken = await _tokenProvider.GenerateRefreshToken(user, accessToken.Jti, cancellationToken);
+        
+        var roles = user.Roles.Select(r => r.Name?.ToLower() ?? "").ToArray();
 
-        return new LoginResponse(accessToken.AccessToken, refreshToken);
+        return new LoginResponse(
+            user.Email ?? "",
+            roles,
+            accessToken.AccessToken,
+            refreshToken);
     }
 }

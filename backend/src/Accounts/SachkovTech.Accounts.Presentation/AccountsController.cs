@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SachkovTech.Accounts.Application.Commands.EnrollParticipant;
 using SachkovTech.Accounts.Application.Commands.Login;
@@ -11,6 +13,14 @@ namespace SachkovTech.Accounts.Presentation;
 
 public class AccountsController : ApplicationController
 {
+    [HttpGet("test")]
+    [Permission(Permissions.Issues.ReadIssue)]
+    public async Task<IActionResult> Test(
+        CancellationToken cancellationToken)
+    {
+        return Ok("test");
+    }
+    
     [HttpPost("registration")]
     public async Task<IActionResult> Register(
         [FromBody] RegisterUserRequest request,
@@ -39,22 +49,46 @@ public class AccountsController : ApplicationController
 
         if (result.IsFailure)
             return result.Error.ToResponse();
+        
+        // var cookieOptions = new CookieOptions
+        // {
+        //     HttpOnly = true,
+        //     Secure = false, // Установите true, если переходите на HTTPS
+        //     SameSite = SameSiteMode.None,
+        //     Expires = DateTime.Now.AddDays(1)
+        // };
+
+        Response.Cookies.Append("refresh_token", result.Value.RefreshToken.ToString());
 
         return Ok(result.Value);
     }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshTokens(
-        [FromBody] RefreshTokensRequest request,
         [FromServices] RefreshTokensHandler handler,
         CancellationToken cancellationToken)
     {
+        if (!Request.Cookies.TryGetValue("refresh_token", out var myCookieValue))
+        {
+            return Unauthorized();
+        }
+        
         var result = await handler.Handle(
-            new RefreshTokensCommand(request.AccessToken, request.RefreshToken),
+            new RefreshTokensCommand(Guid.Parse(myCookieValue)),
             cancellationToken);
 
         if (result.IsFailure)
             return result.Error.ToResponse();
+        
+        // var cookieOptions = new CookieOptions
+        // {
+        //     HttpOnly = true,
+        //     Secure = false, // Установите true, если переходите на HTTPS
+        //     SameSite = SameSiteMode.None,
+        //     Expires = DateTime.Now.AddDays(1)
+        // };
+        
+        Response.Cookies.Append("refresh_token", result.Value.RefreshToken.ToString());
 
         return Ok(result.Value);
     }

@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.OpenApi.Models;
 using SachkovTech.Accounts.Infrastructure.Seeding;
 using SachkovTech.Web;
 using SachkovTech.Web.Middlewares;
 using Serilog;
-
 
 DotNetEnv.Env.Load();
 
@@ -67,6 +67,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// app.UseCookiePolicy(new CookiePolicyOptions()
+// {
+//     HttpOnly = HttpOnlyPolicy.None,
+//     Secure = CookieSecurePolicy.None, // Установите true, если переходите на HTTPS
+// });
+
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
