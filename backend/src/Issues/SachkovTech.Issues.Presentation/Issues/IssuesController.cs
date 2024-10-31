@@ -17,12 +17,12 @@ public class IssuesController : ApplicationController
         CancellationToken cancellationToken)
     {
         var query = request.ToQuery();
-        
+
         var response = await handler.Handle(query, cancellationToken);
-        
+
         return Ok(response);
     }
-    
+
     [Permission(Permissions.Issues.ReadIssue)]
     [HttpGet]
     public async Task<ActionResult> Get(
@@ -31,9 +31,9 @@ public class IssuesController : ApplicationController
         CancellationToken cancellationToken)
     {
         var query = request.ToQuery();
-        
+
         var response = await handler.Handle(query, cancellationToken);
-        
+
         return Ok(response);
     }
 

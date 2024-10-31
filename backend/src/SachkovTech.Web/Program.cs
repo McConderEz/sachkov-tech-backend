@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.OpenApi.Models;
 using SachkovTech.Accounts.Infrastructure.Seeding;
 using SachkovTech.Web;
@@ -70,13 +69,13 @@ if (app.Environment.IsDevelopment())
 
 // app.UseCookiePolicy(new CookiePolicyOptions()
 // {
-//     HttpOnly = HttpOnlyPolicy.None,
+//     HttpOnly = HttpOnlyPolicy.Always,
 //     Secure = CookieSecurePolicy.None, // Установите true, если переходите на HTTPS
 // });
 
 app.UseCors(config =>
 {
-    config.WithOrigins("http://localhost:5173")
+    config.WithOrigins("http://localhost:5173", "http://localhost:5174")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();

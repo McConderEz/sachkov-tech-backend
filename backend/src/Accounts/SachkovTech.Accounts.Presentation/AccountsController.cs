@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SachkovTech.Accounts.Application.Commands.EnrollParticipant;
 using SachkovTech.Accounts.Application.Commands.Login;
@@ -18,6 +16,8 @@ public class AccountsController : ApplicationController
     public async Task<IActionResult> Test(
         CancellationToken cancellationToken)
     {
+        return Unauthorized();
+        
         return Ok("test");
     }
     
