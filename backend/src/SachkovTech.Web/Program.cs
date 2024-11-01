@@ -4,7 +4,6 @@ using SachkovTech.Web;
 using SachkovTech.Web.Middlewares;
 using Serilog;
 
-
 DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +19,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         In = ParameterLocation.Header,
         Description = "Please insert JWT with Bearer into field",
+
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     });
@@ -62,11 +62,8 @@ app.UseExceptionMiddleware();
 
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(config =>
 {
