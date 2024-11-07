@@ -21,7 +21,7 @@ public static class GetPresignedUrl
             var presignedRequest = new GetPreSignedUrlRequest
             {
                 BucketName = "file-service",
-                Key = $"videos/{key}",
+                Key = key,
                 Verb = HttpVerb.GET,
                 Expires = DateTime.Now.AddHours(24),
                 Protocol = Protocol.HTTP,

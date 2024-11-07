@@ -28,7 +28,7 @@ public static class UploadPresignedUrl
                 Key = $"videos/{key}",
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.Now.AddMinutes(15),
-                ContentType = uploadPresignedUrlRequest.ContentType,
+                ContentType = "video/mp4",
                 Protocol = Protocol.HTTP,
                 Metadata =
                 {

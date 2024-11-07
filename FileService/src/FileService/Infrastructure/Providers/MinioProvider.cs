@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 using System.Runtime.CompilerServices;
+using Minio.DataModel;
 
 namespace FileService.Infrastrucure.Providers;
 public class MinioProvider : IFileProvider

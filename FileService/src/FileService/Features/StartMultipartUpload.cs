@@ -26,13 +26,13 @@ public static class StartMultipartUpload
             {
                 BucketName = "file-service",
                 Key = $"videos/{key}",
-                ContentType = startMultipartUploadRequest.ContentType,
+                ContentType = "video/mp4",
                 Metadata =
                 {
                     ["file-name"] = startMultipartUploadRequest.FileName
                 }
             };
-
+            
             var response = await s3Client.InitiateMultipartUploadAsync(multipartRequest);
 
             return Results.Ok(new
