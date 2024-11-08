@@ -14,6 +14,8 @@ builder.Services.AddEndpoints();
 
 builder.Services.AddCors();
 
+builder.Services.AddHttpClient<>()
+
 builder.Services.AddSingleton<IAmazonS3>(_ =>
 {
     var config = new AmazonS3Config

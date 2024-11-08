@@ -1,4 +1,5 @@
-﻿using FileService.Core.Options;
+﻿using FileService.Core;
+using FileService.Core.Options;
 using FileService.MongoDataAccess;
 using Minio;
 using MongoDB.Driver;
@@ -11,9 +12,10 @@ public static class DependencyInjection
         this IServiceCollection services,
         ConfigurationManager configurations)
     {
-        services.AddSingleton(new MongoClient(configurations.GetConnectionString("MongoConnection")));
+        services.AddScoped<MongoDbContext>();
+        services.AddSingleton<IMongoClient>(new MongoClient(configurations.GetConnectionString("MongoConnection")));
 
-        services.AddScoped<FileRepository>();
+        services.AddScoped<IFilesRepository, FilesRepository>();
 
         return services;
     }

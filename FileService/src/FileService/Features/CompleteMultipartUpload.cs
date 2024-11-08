@@ -1,5 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using FileService.Core;
+using FileService.Core.Documents;
 using FileService.Endpoints;
 
 namespace FileService.Features;
@@ -22,12 +24,11 @@ public static class CompleteMultipartUpload
         Guid key,
         CompleteMultipartRequest request,
         IAmazonS3 s3Client,
+        IFilesRepository filesRepository,
         CancellationToken cancellationToken)
     {
         try
         {
-            // TODO: Создать задачу, которая проверит по key наличие файла в mongodb и в minio через 24 часа
-
             var completeRequest = new CompleteMultipartUploadRequest
             {
                 BucketName = "bucket",
@@ -40,9 +41,23 @@ public static class CompleteMultipartUpload
                 completeRequest,
                 cancellationToken);
 
-            // TODO: Instert into mongodb info about file
+            var metaDataRequest = new GetObjectMetadataRequest
+            {
+                BucketName = "bucket",
+                Key = response.Key
+            };
 
-            // TODO: Удалить задачу, которая проверит по key наличие файла в mongodb и в minio через 24 часа
+            var metadata = await s3Client.GetObjectMetadataAsync(metaDataRequest, cancellationToken);
+
+            var file = new FileDocument
+            {
+                StoragePath = response.Key,
+                ContentType = metadata.Headers.ContentType,
+                FileSize = metadata.ContentLength,
+                UploadDate = DateTime.UtcNow
+            };
+
+            await filesRepository.Add(file, cancellationToken);
 
             return Results.Ok(new
             {
