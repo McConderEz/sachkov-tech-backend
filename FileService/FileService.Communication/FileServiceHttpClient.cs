@@ -31,8 +31,6 @@ public static class HttpServiceStartup
         services.AddHttpClient<FileServiceClient>((serviceProvider, httpCffgtlient) =>
         {
             var fileServiceOptions = serviceProvider.GetRequiredService<IOptions<FileServiceOptions>>().Value;
-
-            httpClient.BaseAddress = new Uri(fileServiceOptions.HttpAdress);
         });
     }
 }
