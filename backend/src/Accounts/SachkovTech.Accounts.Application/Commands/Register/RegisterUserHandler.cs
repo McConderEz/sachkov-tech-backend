@@ -55,7 +55,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
                 return Errors.General.NotFound(null, "role").ToErrorList();
             
             var userResult = User.CreateParticipant(command.UserName, command.Email, role);
-
+            
             if (userResult.IsFailure)
                 return userResult.Error.ToErrorList();
 

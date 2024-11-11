@@ -25,7 +25,7 @@ public static class CompleteMultipartUpload
     private static async Task<IResult> Handler(
         string key,
         CompleteMultipartRequest request,
-        IFileRepository fileRepository,
+        IFilesRepository filesRepository,
         IAmazonS3 s3Client,
         CancellationToken cancellationToken)
     {
@@ -64,7 +64,7 @@ public static class CompleteMultipartUpload
                 UploadDate = DateTime.UtcNow
             };
 
-            await fileRepository.Add(fileData, cancellationToken);
+            await filesRepository.Add(fileData, cancellationToken);
 
             BackgroundJob.Delete(jobId);
 
