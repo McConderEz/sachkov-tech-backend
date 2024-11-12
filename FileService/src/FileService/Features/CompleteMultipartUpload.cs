@@ -59,7 +59,7 @@ public static class CompleteMultipartUpload
             {
                 Id = fileId,
                 StoragePath = key,
-                Size = metaData.Headers.ContentLength,
+                FileSize = metaData.Headers.ContentLength,
                 ContentType = metaData.Headers.ContentType,
                 UploadDate = DateTime.UtcNow
             };
