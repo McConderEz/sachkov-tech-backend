@@ -60,9 +60,9 @@ var app = builder.Build();
 //
 // await dbContext.Database.MigrateAsync();
 
-var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
-
-await accountsSeeder.SeedAsync();
+// var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+//
+// await accountsSeeder.SeedAsync();
 
 app.UseExceptionMiddleware();
 

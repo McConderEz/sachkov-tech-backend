@@ -29,11 +29,11 @@ public class LessonDtoConfiguration : IEntityTypeConfiguration<LessonDto>
         builder.Property(b => b.Experience)
             .HasColumnName("experience");
         
-        builder.Property(l => l.VideoId)
+        builder.Property(l => l.VideoUrl)
             .IsRequired()
             .HasColumnName("video_id");
         
-        builder.Property(l => l.PreviewId)
+        builder.Property(l => l.PreviewUrl)
             .IsRequired()
             .HasColumnName("preview_id");
 

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
+using SachkovTech.Core.Dtos;
 using SachkovTech.Framework;
 using SachkovTech.Framework.Authorization;
 using SachkovTech.Issues.Application.Features.Lessons.Command.AddIssueToLesson;
@@ -93,7 +95,7 @@ public class LessonsController : ApplicationController
 
         return Ok();
     }
-    
+
     [HttpDelete("{lessonId}/tag")]
     [Permission(Permissions.Lessons.UpdateLesson)]
     public async Task<IActionResult> RemoveTagFromLesson(
@@ -109,7 +111,7 @@ public class LessonsController : ApplicationController
 
         return Ok();
     }
-    
+
     [HttpPatch("{lessonId}/restore")]
     [Permission(Permissions.Lessons.UpdateLesson)]
     public async Task<IActionResult> RestoreLesson(
@@ -124,7 +126,7 @@ public class LessonsController : ApplicationController
 
         return Ok();
     }
-    
+
     [HttpDelete("{lessonId:guid}")]
     [Permission(Permissions.Lessons.DeleteLesson)]
     public async Task<IActionResult> SoftDeleteLesson(
@@ -140,21 +142,138 @@ public class LessonsController : ApplicationController
         return Ok();
     }
 
-    [HttpGet()]
-    [Permission(Permissions.Lessons.ReadLesson)]
-    public async Task<IActionResult> GetLessonWithPagination(
+    [HttpGet]
+    //[Permission(Permissions.Lessons.ReadLesson)]
+    public async Task<List<LessonDto>> GetLessonWithPagination(
         [FromQuery] int page,
         [FromQuery] int pageSize,
         [FromServices] GetLessonsWithPaginationHandler handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(new GetLessonsWithPaginationValidatorQuery(page, pageSize),
-            cancellationToken);
+        // var result = await handler.Handle(new GetLessonsWithPaginationValidatorQuery(page, pageSize),
+        //     cancellationToken);
+        //
+        // if (result.IsFailure)
+        //     return result.Error.ToResponse();
 
-        if (result.IsFailure)
-            return result.Error.ToResponse();
+        // return Ok(result.Value);
 
-        return Ok(result.Value);
+        List<LessonDto> result =
+        [
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 1",
+                Title = "Title 1",
+                Experience = 1,
+                VideoUrl = "VideoUrl 1",
+                PreviewUrl = "PreviewUrl 1",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 2",
+                Title = "Title 2",
+                Experience = 2,
+                VideoUrl = "VideoUrl 2",
+                PreviewUrl = "PreviewUrl 2",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 3",
+                Title = "Title 3",
+                Experience = 3,
+                VideoUrl = "VideoUrl 3",
+                PreviewUrl = "PreviewUrl 3",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 4",
+                Title = "Title 4",
+                Experience = 4,
+                VideoUrl = "VideoUrl 4",
+                PreviewUrl = "PreviewUrl 4",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 5",
+                Title = "Title 5",
+                Experience = 5,
+                VideoUrl = "VideoUrl 5",
+                PreviewUrl = "PreviewUrl 5",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 6",
+                Title = "Title 6",
+                Experience = 6,
+                VideoUrl = "VideoUrl 6",
+                PreviewUrl = "PreviewUrl 6",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 7",
+                Title = "Title 7",
+                Experience = 7,
+                VideoUrl = "VideoUrl 7",
+                PreviewUrl = "PreviewUrl 7",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 8",
+                Title = "Title 8",
+                Experience = 8,
+                VideoUrl = "VideoUrl 8",
+                PreviewUrl = "PreviewUrl 8",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 9",
+                Title = "Title 9",
+                Experience = 9,
+                VideoUrl = "VideoUrl 9",
+                PreviewUrl = "PreviewUrl 9",
+                Tags = [],
+                Issues = []
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Description = "Description 10",
+                Title = "Title 10",
+                Experience = 10,
+                VideoUrl = "VideoUrl 10",
+                PreviewUrl = "PreviewUrl 10",
+                Tags = [],
+                Issues = []
+            },
+        ];
+
+
+        return result;
     }
 
     [HttpGet("{lessonId:guid}")]
